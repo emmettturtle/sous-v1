@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { AssistantSkeleton } from '@/components/LoadingSkeletons'
 
 interface Message {
   id: string
@@ -28,6 +29,7 @@ export default function AIAssistant() {
   const [inputMessage, setInputMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadingClients, setLoadingClients] = useState(true)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Load clients on component mount
   useEffect(() => {
@@ -82,6 +84,11 @@ What would you like help with today?`,
 
     loadClients()
   }, [router])
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   const selectClient = (client: Client) => {
     setSelectedClient(client)
@@ -221,14 +228,7 @@ Could you either:
   }
 
   if (loadingClients) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
-          <p className="mt-4 text-lg text-gray-600">Loading your AI assistant...</p>
-        </div>
-      </div>
-    )
+    return <AssistantSkeleton />
   }
 
   return (
@@ -340,14 +340,21 @@ Could you either:
             
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-gray-100 rounded-lg px-4 py-2">
-                  <div className="flex items-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600"></div>
-                    <span className="text-sm text-gray-600">Thinking...</span>
+                <div className="bg-gray-100 rounded-lg px-4 py-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-1">
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full animate-thinking"></div>
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full animate-thinking-delay-1"></div>
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full animate-thinking-delay-2"></div>
+                    </div>
+                    <span className="text-sm text-gray-600 font-medium">Thinking...</span>
                   </div>
                 </div>
               </div>
             )}
+            
+            {/* Invisible element to scroll to */}
+            <div ref={messagesEndRef} />
           </div>
 
           {/* Input */}

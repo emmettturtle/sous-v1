@@ -37,3 +37,43 @@ body {
 .text-gray-700 {
   color: #111827 !important; /* gray-900 instead of gray-700 */
 }
+
+/* Custom shimmer animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* 3-dot thinking animation */
+@keyframes thinking {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+.animate-thinking {
+  animation: thinking 1.4s ease-in-out infinite;
+}
+
+.animate-thinking-delay-1 {
+  animation: thinking 1.4s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.animate-thinking-delay-2 {
+  animation: thinking 1.4s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
