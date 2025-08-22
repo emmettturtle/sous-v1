@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { ClientsListSkeleton } from '@/components/LoadingSkeletons'
+import { ClientPreferences } from '@/types/database'
 
 interface Client {
   id: string
@@ -12,7 +13,7 @@ interface Client {
   phone: string
   household_size: number
   created_at: string
-  client_preferences: any[]
+  client_preferences: ClientPreferences[]
 }
 
 export default function ClientsList() {

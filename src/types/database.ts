@@ -83,7 +83,7 @@ export interface ClientFeedbackHistory {
   feedback_type: 'rating' | 'like' | 'dislike' | 'note'
   rating?: number
   feedback_text?: string
-  context?: any
+  context?: Record<string, unknown>
   created_at: string
 }
 

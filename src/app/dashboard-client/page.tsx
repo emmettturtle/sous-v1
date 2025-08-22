@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { DashboardSkeleton } from '@/components/LoadingSkeletons'
 
 export default function ClientDashboard() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
