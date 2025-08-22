@@ -19,12 +19,12 @@ export default function ClientDashboard() {
 
       const { data: { user }, error } = await supabase.auth.getUser()
       
-      if (error || !user) {
+      if (error || !user || !user.email) {
         router.push('/login')
         return
       }
       
-      setUser(user)
+      setUser({ id: user.id, email: user.email })
       setLoading(false)
     }
 
@@ -34,8 +34,8 @@ export default function ClientDashboard() {
     const { data: { subscription } } = supabase?.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT' || !session) {
         router.push('/login')
-      } else if (session?.user) {
-        setUser(session.user)
+      } else if (session?.user && session.user.email) {
+        setUser({ id: session.user.id, email: session.user.email })
         setLoading(false)
       }
     }) || { data: { subscription: null } }

@@ -153,22 +153,25 @@ export default function ClientsList() {
                   </div>
 
                   {/* Quick preferences summary */}
-                  {client.client_preferences && client.client_preferences[0] && (
-                    <div className="mt-4 p-3 bg-gray-50 rounded-md">
-                      <p className="text-xs font-medium text-gray-500 mb-1">Quick Summary</p>
-                      <div className="text-xs text-gray-600 space-y-1">
-                        {client.client_preferences[0].dietary_restrictions?.length > 0 && (
-                          <div>Dietary: {client.client_preferences[0].dietary_restrictions.join(', ')}</div>
-                        )}
-                        {client.client_preferences[0].allergies?.length > 0 && (
-                          <div>Allergies: {client.client_preferences[0].allergies.join(', ')}</div>
-                        )}
-                        {client.client_preferences[0].cuisine_preferences?.length > 0 && (
-                          <div>Cuisines: {client.client_preferences[0].cuisine_preferences.slice(0, 2).join(', ')}</div>
-                        )}
+                  {client.client_preferences && client.client_preferences[0] && (() => {
+                    const prefs = client.client_preferences[0];
+                    return (
+                      <div className="mt-4 p-3 bg-gray-50 rounded-md">
+                        <p className="text-xs font-medium text-gray-500 mb-1">Quick Summary</p>
+                        <div className="text-xs text-gray-600 space-y-1">
+                          {prefs.dietary_restrictions?.length && prefs.dietary_restrictions.length > 0 && (
+                            <div>Dietary: {prefs.dietary_restrictions.join(', ')}</div>
+                          )}
+                          {prefs.allergies?.length && prefs.allergies.length > 0 && (
+                            <div>Allergies: {prefs.allergies.join(', ')}</div>
+                          )}
+                          {prefs.cuisine_preferences?.length && prefs.cuisine_preferences.length > 0 && (
+                            <div>Cuisines: {prefs.cuisine_preferences.slice(0, 2).join(', ')}</div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    );
+                  })()}
 
                   <div className="mt-6 flex space-x-3">
                     <button
