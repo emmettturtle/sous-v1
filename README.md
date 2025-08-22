@@ -1,28 +1,89 @@
-# Sous Agent - Personal Chef AI Assistant
+# Sous Agent - AI-Powered Personal Chef Assistant
 
-A modern web application that provides AI-powered assistance for personal chefs, including client management, menu recommendations, and operational guidance.
+A comprehensive personal chef management platform that leverages advanced AI agents to provide intelligent menu recommendations, client management, and operational guidance for professional chefs.
 
-## Features
+## 🏗️ Architecture Overview
 
-- **Client Management**: Streamlined form-based client onboarding with preference tracking
-- **AI Menu Assistant**: Intelligent menu recommendations based on client preferences and dietary restrictions
-- **Menu Item Management**: Comprehensive menu item creation and management system
-- **Real-time Chat Interface**: Interactive AI assistant with smooth animations and auto-scroll
-- **Professional UI**: Modern design with shimmer loading states and responsive layouts
+**Sous Agent** is built on a modern full-stack architecture combining Next.js 15, Supabase, and advanced AI agent workflows powered by LangChain and OpenAI.
 
-## Tech Stack
+### Core Technologies
+- **Frontend**: Next.js 15 with App Router, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, Supabase (PostgreSQL + Auth)
+- **AI Engine**: LangChain + OpenAI GPT-4o-mini
+- **Authentication**: Supabase Auth with Row Level Security
+- **Deployment**: Vercel
 
-- **Next.js 15** with App Router
-- **TypeScript** for type safety
-- **Tailwind CSS** for styling
-- **Supabase** for database and authentication
-- **OpenAI API** for AI-powered recommendations
-- **LangChain/LangGraph** for AI workflows
+### Key Features
+- 🤖 **AI Menu Assistant** - Personalized menu recommendations using client preferences and feedback
+- 👥 **Client Management** - Form-based client onboarding with comprehensive preference tracking
+- 🍽️ **Menu Item Management** - Chef's personal menu catalog with advanced filtering
+- 📊 **Real-time Dashboard** - Chef operations overview with quick actions
+- 🔐 **Secure Authentication** - Multi-tenant architecture with chef-specific data isolation
 
-## Environment Setup
+## 📁 Project Structure
 
-1. Copy `.env.example` to `.env.local`
-2. Configure the following environment variables:
+```
+src/
+├── app/                          # Next.js App Router pages
+│   ├── api/                      # API Routes
+│   │   └── menu-assistant/       # AI agent endpoints
+│   ├── assistant/                # AI chat interface
+│   ├── auth/                     # Authentication callbacks
+│   ├── clients/                  # Client management pages
+│   ├── dashboard-client/         # Main dashboard
+│   └── ...
+├── components/                   # Reusable UI components
+│   ├── ChatInterface.tsx         # AI chat component
+│   └── LoadingSkeletons.tsx      # Loading states
+├── lib/                          # Core business logic
+│   ├── agents/                   # AI agent implementations
+│   │   └── menu-assistant.ts     # Main AI workflow
+│   ├── supabase.ts              # Database client
+│   └── supabase-server.ts       # Server-side DB operations
+└── types/                        # TypeScript definitions
+    └── database.ts              # Database schema types
+```
+
+## 📚 Documentation
+
+This documentation is organized into focused sections for developers:
+
+### Core Documentation
+- **[AI Workflow](./docs/ai-workflow.md)** - In-depth guide to the agentic AI system
+- **[API Reference](./docs/api-reference.md)** - Complete API endpoints and interfaces
+- **[Database Schema](./docs/database-schema.md)** - Database structure and relationships
+- **[Component Architecture](./docs/components.md)** - Frontend component organization
+
+### Setup & Deployment
+- **[Environment Setup](./docs/environment-setup.md)** - Local development configuration
+- **[Deployment Guide](./docs/deployment.md)** - Production deployment instructions
+
+## 🚀 Quick Start
+
+1. **Clone and install dependencies**
+   ```bash
+   git clone [repository-url]
+   cd sous-v1
+   npm install
+   ```
+
+2. **Configure environment variables**
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local with your credentials
+   ```
+
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open application**
+   ```
+   http://localhost:3000
+   ```
+
+## 🔑 Environment Variables
 
 ```env
 # Supabase Configuration
@@ -30,90 +91,84 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
-# OpenAI Configuration
+# OpenAI Configuration (for AI Assistant)
 OPENAI_API_KEY=your_openai_api_key
+
+# LangSmith (Optional - for debugging LangChain)
+LANGCHAIN_TRACING_V2=false
+LANGCHAIN_API_KEY=your_langsmith_api_key
+LANGCHAIN_PROJECT=sous-agent
 ```
 
-## Database Setup
+## 🧠 AI Agent System
 
-Run the SQL schema from `supabase-schema-simplified.sql` in your Supabase SQL editor to set up the required database tables and row-level security policies.
+The heart of Sous Agent is its intelligent menu recommendation system that:
 
-## Local Development
+1. **Analyzes Client Profiles** - Dietary restrictions, preferences, household size, budget
+2. **Processes Chef's Menu** - Available dishes, ingredients, allergens, pricing
+3. **Incorporates Feedback History** - Past client ratings and preferences
+4. **Generates Contextual Recommendations** - Personalized menu suggestions with reasoning
+
+**Key AI Features:**
+- Multi-factor recommendation engine
+- Natural language conversation interface
+- Real-time preference learning
+- Contextual menu matching
+
+## 📊 Application Flow
+
+```mermaid
+graph TD
+    A[Chef Login] --> B[Dashboard]
+    B --> C{Choose Action}
+    C -->|Client Management| D[View/Add Clients]
+    C -->|Menu Items| E[Manage Menu]
+    C -->|AI Assistant| F[Chat Interface]
+    F --> G[Select Client]
+    G --> H[AI Agent Processing]
+    H --> I[Personalized Recommendations]
+    D --> J[Client Onboarding Form]
+    J --> K[Store Preferences]
+```
+
+## 🛠️ Development Commands
 
 ```bash
-# Install dependencies
-npm install
+# Development
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
 
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm run start
+# Database Operations
+# (Handled through Supabase Dashboard)
 ```
 
-## Deployment on Vercel
+## 🏢 Multi-tenant Architecture
 
-1. Connect your GitHub repository to Vercel
-2. Configure environment variables in Vercel dashboard:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-   - `OPENAI_API_KEY`
-3. Deploy with automatic builds on push
+Sous Agent supports multiple chefs with complete data isolation:
+- **Chef Authentication** - Individual chef accounts via Supabase Auth
+- **Row Level Security** - Database-enforced data isolation
+- **Client Segmentation** - Each chef manages only their clients
+- **Menu Isolation** - Chef-specific menu items and preferences
 
-## Application Structure
+## 📈 Performance & Scalability
 
-```
-src/
-├── app/                    # Next.js App Router pages
-│   ├── dashboard-client/   # Main dashboard
-│   ├── assistant/          # AI assistant chat interface
-│   ├── clients/           # Client management
-│   ├── menu-items/        # Menu item management
-│   ├── onboard-client-form/ # Client onboarding form
-│   ├── create-menu-item/   # Menu item creation
-│   └── api/               # API routes
-├── components/            # Reusable UI components
-├── lib/                  # Utility functions and agents
-└── types/                # TypeScript type definitions
-```
+- **Static Generation** - Pre-rendered pages for optimal performance
+- **Edge Functions** - API routes deployed at the edge
+- **Real-time Updates** - Supabase real-time subscriptions
+- **Caching Strategy** - Browser and CDN caching for static assets
 
-## Key Pages
+## 🔧 Built With
 
-- `/` - Landing page (redirects to dashboard)
-- `/dashboard-client` - Main dashboard with stats and quick actions
-- `/assistant` - AI chat assistant for menu recommendations
-- `/clients` - Client list and management
-- `/menu-items` - Menu item management with search and filters
-- `/onboard-client-form` - Add new clients
-- `/create-menu-item` - Add new menu items
+- [Next.js 15](https://nextjs.org/) - React framework with App Router
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Supabase](https://supabase.com/) - Backend-as-a-Service (PostgreSQL + Auth)
+- [LangChain](https://langchain.dev/) - AI application framework
+- [OpenAI](https://openai.com/) - GPT-4o-mini for menu recommendations
+- [Vercel](https://vercel.com/) - Deployment and hosting platform
 
-## Features
+---
 
-### AI Assistant
-- Client-specific menu recommendations
-- Dietary restriction awareness
-- Interactive chat interface with thinking animations
-- Auto-scroll to latest messages
-
-### Client Management
-- Form-based onboarding
-- Comprehensive preference tracking
-- Search and filter capabilities
-
-### Menu Management
-- Rich menu item creation
-- Ingredient and allergen tracking
-- Availability management
-- Search and categorization
-
-## Production Ready
-
-- All test/debug pages removed
-- Environment variables properly configured
-- Database schema optimized for production
-- Error handling and loading states implemented
-- Responsive design for all screen sizes
+**Next Steps**: Explore the [AI Workflow Documentation](./docs/ai-workflow.md) to understand the intelligent recommendation engine that powers Sous Agent.
