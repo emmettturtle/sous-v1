@@ -58,48 +58,6 @@ This documentation is organized into focused sections for developers:
 - **[Environment Setup](./docs/environment-setup.md)** - Local development configuration
 - **[Deployment Guide](./docs/deployment.md)** - Production deployment instructions
 
-## 🚀 Quick Start
-
-1. **Clone and install dependencies**
-   ```bash
-   git clone [repository-url]
-   cd sous-v1
-   npm install
-   ```
-
-2. **Configure environment variables**
-   ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your credentials
-   ```
-
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-4. **Open application**
-   ```
-   http://localhost:3000
-   ```
-
-## 🔑 Environment Variables
-
-```env
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-
-# OpenAI Configuration (for AI Assistant)
-OPENAI_API_KEY=your_openai_api_key
-
-# LangSmith (Optional - for debugging LangChain)
-LANGCHAIN_TRACING_V2=false
-LANGCHAIN_API_KEY=your_langsmith_api_key
-LANGCHAIN_PROJECT=sous-agent
-```
-
 ## 🧠 AI Agent System
 
 The heart of Sous Agent is its intelligent menu recommendation system that:
