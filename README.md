@@ -2,6 +2,32 @@
 
 A comprehensive personal chef management platform that leverages advanced AI agents to provide intelligent menu recommendations, client management, and operational guidance for professional chefs.
 
+## 🌐 Live Demo
+
+**Try Sous Agent now!** Experience the full application with sample data:
+
+**🚀 Live Application:** [https://sous-v1-8ladrwb1a-emmetts-projects-3d3b9d2c.vercel.app](https://sous-v1-8ladrwb1a-emmetts-projects-3d3b9d2c.vercel.app)
+
+### Demo Account Access
+- **Email:** `sous.demo@gmail.com`
+- **Password:** `demodemo1234`
+
+The demo account includes:
+- **5 Sample Clients** with diverse dietary preferences and requirements
+- **15 Professional Recipes** across Mediterranean, Asian, American, Mexican, and French cuisines  
+- **Sample Feedback History** to demonstrate AI learning capabilities
+- **Full AI Assistant** ready to provide personalized menu recommendations
+
+### Quick Demo Guide
+1. **Login** with the demo credentials above
+2. **Explore the Dashboard** - View client overview and quick actions
+3. **Try the AI Assistant** - Click the prominent AI Assistant button
+4. **Select a Client** - Choose from Sarah, Michael, Johnson Family, Alexandra, or Gonzalez couple
+5. **Ask for Recommendations** - Try queries like:
+   - "What vegetarian options would work for Sarah?"
+   - "Michael wants something spicy and Asian-inspired"
+   - "What family-friendly meals work for the Johnson family?"
+
 ## 🏗️ Architecture Overview
 
 **Sous Agent** is built on a modern full-stack architecture combining Next.js 15, Supabase, and advanced AI agent workflows powered by LangChain and OpenAI.
