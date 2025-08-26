@@ -1,20 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from "next/link"
 
 export default function Home() {
-  const router = useRouter()
-
-  useEffect(() => {
-    // Redirect to dashboard after a brief moment to show landing page
-    const timer = setTimeout(() => {
-      router.push('/dashboard-client')
-    }, 2000)
-
-    return () => clearTimeout(timer)
-  }, [router])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-purple-50">
@@ -84,11 +72,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-16 text-center">
-          <div className="animate-pulse text-sm text-gray-500">
-            Redirecting to dashboard...
-          </div>
-        </div>
       </div>
     </div>
   )
