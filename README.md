@@ -6,7 +6,7 @@ A comprehensive personal chef management platform that leverages advanced AI age
 
 **Try Sous Agent now!** Experience the full application with sample data:
 
-**🚀 Live Application:** [https://sous-v1-8ladrwb1a-emmetts-projects-3d3b9d2c.vercel.app](https://sous-v1-8ladrwb1a-emmetts-projects-3d3b9d2c.vercel.app)
+**🚀 Live Application:** [sous-v1.vercel.app](sous-v1.vercel.app)
 
 ### Demo Account Access
 - **Email:** `sous.demo@gmail.com`
