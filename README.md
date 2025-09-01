@@ -8,7 +8,7 @@ A comprehensive personal chef management platform that leverages advanced AI age
 
 **🚀 Live Application:** [https://sous-v1.vercel.app/](https://sous-v1.vercel.app/)
 
-### Demo Account Access
+<!-- ### Demo Account Access
 - **Email:** `sous.demo@gmail.com`
 - **Password:** `demodemo1234`
 
@@ -16,7 +16,7 @@ The demo account includes:
 - **5 Sample Clients** with diverse dietary preferences and requirements
 - **15 Professional Recipes** across Mediterranean, Asian, American, Mexican, and French cuisines  
 - **Sample Feedback History** to demonstrate AI learning capabilities
-- **Full AI Assistant** ready to provide personalized menu recommendations
+- **Full AI Assistant** ready to provide personalized menu recommendations -->
 
 ### Quick Demo Guide
 1. **Login** with the demo credentials above
