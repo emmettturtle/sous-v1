@@ -1,0 +1,27 @@
+name: Database Keepalive
+
+on:
+  schedule:
+    # Runs every 12 hours at minute 0 (00:00 and 12:00 UTC)
+    - cron: '0 */12 * * *'
+  workflow_dispatch: # Allows manual triggering from GitHub UI
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping database keepalive endpoint
+        run: |
+          response=$(curl -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -w "\nHTTP Status: %{http_code}" \
+            https://sous-v1.vercel.app/api/keepalive)
+          echo "$response"
+
+          # Check if the request was successful
+          if echo "$response" | grep -q "HTTP Status: 200"; then
+            echo "✅ Keepalive successful"
+          else
+            echo "❌ Keepalive failed"
+            exit 1
+          fi

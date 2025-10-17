@@ -24,6 +24,7 @@ The demo account includes:
 3. **Try the AI Assistant** - Click the prominent AI Assistant button
 4. **Select a Client** - Choose from Sarah, Michael, Johnson Family, Alexandra, or Gonzalez couple
 5. **Ask for Recommendations** - Try queries like:
+
    - "What vegetarian options would work for Sarah?"
    - "Michael wants something spicy and Asian-inspired"
    - "What family-friendly meals work for the Johnson family?"
