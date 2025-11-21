@@ -24,6 +24,17 @@ export interface MenuAssistantResponse {
   error?: string
 }
 
+/**
+ * AI Menu Assistant Core Logic
+ *
+ * Generates personalized menu recommendations using LangChain and OpenAI.
+ * Loads client data (preferences, dietary restrictions, feedback history)
+ * and chef's available menu items, then uses GPT-4o-mini to generate
+ * intelligent, context-aware recommendations.
+ *
+ * @param request - Contains clientId, chefId, and user's message/question
+ * @returns AI-generated response with suggested menu items and reasoning
+ */
 export async function getMenuAssistance(request: MenuAssistantRequest): Promise<MenuAssistantResponse> {
   try {
     const supabase = createServerClient(
@@ -37,8 +48,6 @@ export async function getMenuAssistance(request: MenuAssistantRequest): Promise<
       }
     )
 
-    console.log('Looking for client:', request.clientId, 'chef:', request.chefId)
-
     // Load client information
     const { data: client, error: clientError } = await supabase
       .from('clients')
@@ -46,8 +55,6 @@ export async function getMenuAssistance(request: MenuAssistantRequest): Promise<
       .eq('id', request.clientId)
       .eq('chef_id', request.chefId)
       .single()
-
-    console.log('Client query result:', { client, clientError })
 
     if (clientError || !client) {
       return {

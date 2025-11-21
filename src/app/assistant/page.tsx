@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { AssistantSkeleton } from '@/components/LoadingSkeletons'
+import AppLayout from '@/components/AppLayout'
 
 interface Message {
   id: string
@@ -22,7 +23,8 @@ interface Client {
 
 export default function AIAssistant() {
   const router = useRouter()
-  
+
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
   const [clients, setClients] = useState<Client[]>([])
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
@@ -37,11 +39,13 @@ export default function AIAssistant() {
       if (!supabase) return
       
       try {
-        const { data: { user }, error: userError } = await supabase.auth.getUser()
-        if (userError || !user) {
+        const { data: { user: authUser }, error: userError } = await supabase.auth.getUser()
+        if (userError || !authUser) {
           router.push('/login')
           return
         }
+
+        setUser({ id: authUser.id, email: authUser.email || '' })
 
         const { data: clientsData, error: clientsError } = await supabase
           .from('clients')
@@ -49,7 +53,7 @@ export default function AIAssistant() {
             *,
             client_preferences (*)
           `)
-          .eq('chef_id', user.id)
+          .eq('chef_id', authUser.id)
           .order('created_at', { ascending: false })
 
         if (clientsError) throw clientsError
@@ -232,34 +236,20 @@ Could you either:
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="px-4 sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-          <div className="py-6 md:flex md:items-center md:justify-between">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-bold leading-7 text-gray-900">
-                🤖 AI Chef Assistant
-              </h1>
-              <p className="text-sm text-gray-500">
-                Your intelligent assistant for menu planning, client management, and chef operations
-              </p>
-            </div>
-            <div className="mt-6 flex space-x-3 md:mt-0 md:ml-4">
-              <button
-                onClick={() => router.push('/dashboard-client')}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Back to Dashboard
-              </button>
-            </div>
-          </div>
+    <AppLayout user={user}>
+      <div className="space-y-6">
+        {/* Page Header */}
+        <div>
+          <h1 className="text-2xl font-bold leading-7 text-gray-900">
+            🤖 AI Chef Assistant
+          </h1>
+          <p className="text-sm text-gray-500">
+            Your intelligent assistant for menu planning, client management, and chef operations
+          </p>
         </div>
-      </div>
 
-      {/* Client Selection Bar */}
-      <div className="bg-indigo-50 border-b border-indigo-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {/* Client Selection Bar */}
+        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <label className="text-sm font-medium text-indigo-900">Client Focus:</label>
@@ -294,10 +284,8 @@ Could you either:
             )}
           </div>
         </div>
-      </div>
 
-      {/* Chat Interface */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Chat Interface */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-[calc(100vh-400px)] min-h-96 flex flex-col">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -384,10 +372,7 @@ Could you either:
           </div>
         </div>
 
-      </div>
-
-      {/* Bottom Section - Client Info and No Clients Message */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        {/* Bottom Section - Client Info and No Clients Message */}
         {/* Client Info Panel */}
         {selectedClient && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
@@ -441,6 +426,6 @@ Could you either:
           </div>
         )}
       </div>
-    </div>
+    </AppLayout>
   )
 }

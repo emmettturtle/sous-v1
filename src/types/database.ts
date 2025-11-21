@@ -93,8 +93,43 @@ export interface ClientWithPreferences extends Client {
   feedback_history?: ClientFeedbackHistory[]
 }
 
+export interface Recipe {
+  id: string
+  menu_item_id: string
+  title: string
+  ingredients: { name: string; amount: string }[]
+  procedure: string
+  prep_time_minutes: number
+  cook_time_minutes: number
+  cooking_methods: string[]
+  created_at: string
+  updated_at: string
+}
+
 export interface MenuItemWithFeedback extends MenuItem {
   feedback_history?: ClientFeedbackHistory[]
+}
+
+export interface MenuItemWithRecipe extends MenuItem {
+  recipe?: Recipe
+}
+
+export interface PrepSchedule {
+  id: string
+  chef_id: string
+  name?: string
+  prep_list_items: string[] // Array of menu_item_ids
+  schedule_data: {
+    menuItemId: string
+    menuItemName: string
+    startTime: string
+    endTime: string
+    duration: number
+  }[]
+  time_window_start: string
+  time_window_end: string
+  created_at: string
+  updated_at: string
 }
 
 export interface ChefWithProfile extends AuthUser {

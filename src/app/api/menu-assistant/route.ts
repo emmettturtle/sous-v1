@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { getMenuAssistance } from '@/lib/agents/menu-assistant'
 
+/**
+ * AI Menu Assistant API Endpoint
+ *
+ * Provides personalized menu recommendations for clients using OpenAI GPT-4o-mini.
+ * Analyzes client preferences, dietary restrictions, feedback history, and chef's
+ * available menu items to generate intelligent suggestions.
+ *
+ * @param request - Contains clientId and userMessage
+ * @returns AI-generated menu recommendations with reasoning
+ */
 export async function POST(request: NextRequest) {
   try {
     const { clientId, userMessage } = await request.json()

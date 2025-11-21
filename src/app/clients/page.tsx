@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { ClientsListSkeleton } from '@/components/LoadingSkeletons'
 import { ClientPreferences } from '@/types/database'
+import AppLayout from '@/components/AppLayout'
 
 interface Client {
   id: string
@@ -20,17 +21,20 @@ export default function ClientsList() {
   const router = useRouter()
   const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
 
   useEffect(() => {
     const loadClients = async () => {
       if (!supabase) return
 
       try {
-        const { data: { user }, error: userError } = await supabase.auth.getUser()
-        if (userError || !user) {
+        const { data: { user: authUser }, error: userError } = await supabase.auth.getUser()
+        if (userError || !authUser) {
           router.push('/login')
           return
         }
+
+        setUser({ id: authUser.id, email: authUser.email || '' })
 
         const { data: clientsData, error: clientsError } = await supabase
           .from('clients')
@@ -38,7 +42,7 @@ export default function ClientsList() {
             *,
             client_preferences (*)
           `)
-          .eq('chef_id', user.id)
+          .eq('chef_id', authUser.id)
           .order('created_at', { ascending: false })
 
         if (clientsError) throw clientsError
@@ -61,38 +65,25 @@ export default function ClientsList() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="px-4 sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-          <div className="py-6 md:flex md:items-center md:justify-between">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-bold leading-7 text-gray-900">
-                Client Management
-              </h1>
-              <p className="text-sm text-gray-500">
-                Manage your clients and use AI menu assistant
-              </p>
-            </div>
-            <div className="mt-6 flex space-x-3 md:mt-0 md:ml-4">
-              <button
-                onClick={() => router.push('/onboard-client-form')}
-                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-              >
-                Add New Client
-              </button>
-              <button
-                onClick={() => router.push('/dashboard-client')}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Back to Dashboard
-              </button>
-            </div>
+    <AppLayout user={user}>
+      <div className="space-y-6">
+        {/* Page Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold leading-7 text-gray-900">
+              Client Management
+            </h1>
+            <p className="text-sm text-gray-500">
+              Manage your clients and use AI menu assistant
+            </p>
           </div>
+          <button
+            onClick={() => router.push('/onboard-client-form')}
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            Add New Client
+          </button>
         </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {clients.length === 0 ? (
           <div className="text-center">
             <div className="mt-4">
@@ -190,6 +181,6 @@ export default function ClientsList() {
           </div>
         )}
       </div>
-    </div>
+    </AppLayout>
   )
 }

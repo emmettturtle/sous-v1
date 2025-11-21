@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { MenuItemsListSkeleton } from '@/components/LoadingSkeletons'
+import AppLayout from '@/components/AppLayout'
 
 interface MenuItem {
   id: string
@@ -30,22 +31,25 @@ export default function MenuItemsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCuisine, setFilterCuisine] = useState('')
   const [filterDifficulty, setFilterDifficulty] = useState('')
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
 
   useEffect(() => {
     const loadMenuItems = async () => {
       if (!supabase) return
 
       try {
-        const { data: { user }, error: userError } = await supabase.auth.getUser()
-        if (userError || !user) {
+        const { data: { user: authUser }, error: userError } = await supabase.auth.getUser()
+        if (userError || !authUser) {
           router.push('/login')
           return
         }
 
+        setUser({ id: authUser.id, email: authUser.email || '' })
+
         const { data: menuItemsData, error: menuItemsError } = await supabase
           .from('menu_items')
           .select('*')
-          .eq('chef_id', user.id)
+          .eq('chef_id', authUser.id)
           .order('created_at', { ascending: false })
 
         if (menuItemsError) throw menuItemsError
@@ -134,38 +138,25 @@ export default function MenuItemsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="px-4 sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-          <div className="py-6 md:flex md:items-center md:justify-between">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-bold leading-7 text-gray-900">
-                Menu Items ({menuItems.length})
-              </h1>
-              <p className="text-sm text-gray-500">
-                Manage your recipe collection and menu offerings
-              </p>
-            </div>
-            <div className="mt-6 flex space-x-3 md:mt-0 md:ml-4">
-              <button
-                onClick={() => router.push('/create-menu-item')}
-                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-              >
-                Add New Menu Item
-              </button>
-              <button
-                onClick={() => router.push('/dashboard-client')}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Back to Dashboard
-              </button>
-            </div>
+    <AppLayout user={user}>
+      <div className="space-y-6">
+        {/* Page Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold leading-7 text-gray-900">
+              Menu Items ({menuItems.length})
+            </h1>
+            <p className="text-sm text-gray-500">
+              Manage your recipe collection and menu offerings
+            </p>
           </div>
+          <button
+            onClick={() => router.push('/create-menu-item')}
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            Add New Menu Item
+          </button>
         </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search and Filters */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -375,6 +366,6 @@ export default function MenuItemsPage() {
           </div>
         )}
       </div>
-    </div>
+    </AppLayout>
   )
 }
