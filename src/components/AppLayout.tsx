@@ -19,10 +19,19 @@ interface AppLayoutProps {
 }
 
 /**
+ * Navigation item type definition
+ */
+interface NavigationItem {
+  name: string
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+}
+
+/**
  * Main navigation configuration
  * Defines all available pages in the application with their routes and icons
  */
-const navigation = [
+const navigation: NavigationItem[] = [
   { name: 'Dashboard', href: '/dashboard-client', icon: HomeIcon },
   { name: 'Clients', href: '/clients', icon: UsersIcon },
   { name: 'Menu Items', href: '/menu-items', icon: DocumentTextIcon },
@@ -122,7 +131,7 @@ function SidebarContent({
   onClose,
   isMobile = false
 }: {
-  navigation: typeof navigation
+  navigation: NavigationItem[]
   pathname: string
   user?: { id: string; email: string } | null
   handleSignOut: () => void
