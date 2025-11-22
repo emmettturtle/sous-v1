@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { MenuItemWithRecipe, Recipe } from '@/types/database'
 import AppLayout from '@/components/AppLayout'
+import { PrepAssistantContentSkeleton } from '@/components/LoadingSkeletons'
 
 interface PrepListItem extends MenuItemWithRecipe {
   selected: boolean
@@ -339,16 +340,11 @@ export default function PrepAssistantPage() {
     item.cuisine_type?.toLowerCase().includes(menuSearchTerm.toLowerCase())
   )
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
-      </div>
-    )
-  }
-
   return (
     <AppLayout user={user}>
+      {loading ? (
+        <PrepAssistantContentSkeleton />
+      ) : (
       <div className="space-y-6">
         {/* Page Header */}
         <div className="mb-6">
@@ -600,6 +596,7 @@ export default function PrepAssistantPage() {
         </div>
       )}
       </div>
+      )}
     </AppLayout>
   )
 }

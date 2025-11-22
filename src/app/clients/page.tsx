@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { ClientsListSkeleton } from '@/components/LoadingSkeletons'
 import { ClientPreferences } from '@/types/database'
 import AppLayout from '@/components/AppLayout'
+import { ClientsContentSkeleton } from '@/components/LoadingSkeletons'
 
 interface Client {
   id: string
@@ -60,12 +60,11 @@ export default function ClientsList() {
     loadClients()
   }, [router])
 
-  if (loading) {
-    return <ClientsListSkeleton />
-  }
-
   return (
     <AppLayout user={user}>
+      {loading ? (
+        <ClientsContentSkeleton />
+      ) : (
       <div className="space-y-6">
         {/* Page Header */}
         <div className="flex items-center justify-between">
@@ -181,6 +180,7 @@ export default function ClientsList() {
           </div>
         )}
       </div>
+      )}
     </AppLayout>
   )
 }

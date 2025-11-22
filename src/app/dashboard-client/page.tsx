@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import { DashboardSkeleton } from '@/components/LoadingSkeletons'
 import AppLayout from '@/components/AppLayout'
+import { DashboardContentSkeleton } from '@/components/LoadingSkeletons'
 
 export default function ClientDashboard() {
   const [user, setUser] = useState<{ id: string; email: string } | null>(null)
@@ -46,12 +46,11 @@ export default function ClientDashboard() {
     }
   }, [router])
 
-  if (loading) {
-    return <DashboardSkeleton />
-  }
-
   return (
     <AppLayout user={user}>
+      {loading ? (
+        <DashboardContentSkeleton />
+      ) : (
       <div className="space-y-6">
         {/* Page Header */}
         <div>
@@ -199,6 +198,7 @@ export default function ClientDashboard() {
           </div>
         </div>
       </div>
+      )}
     </AppLayout>
   )
 }

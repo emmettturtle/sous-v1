@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { AssistantSkeleton } from '@/components/LoadingSkeletons'
 import AppLayout from '@/components/AppLayout'
+import { AssistantContentSkeleton } from '@/components/LoadingSkeletons'
 
 interface Message {
   id: string
@@ -231,12 +231,11 @@ Could you either:
     setMessages(prev => [...prev, clearMessage])
   }
 
-  if (loadingClients) {
-    return <AssistantSkeleton />
-  }
-
   return (
     <AppLayout user={user}>
+      {loadingClients ? (
+        <AssistantContentSkeleton />
+      ) : (
       <div className="space-y-6">
         {/* Page Header */}
         <div>
@@ -426,6 +425,7 @@ Could you either:
           </div>
         )}
       </div>
+      )}
     </AppLayout>
   )
 }

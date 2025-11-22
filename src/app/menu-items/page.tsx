@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { MenuItemsListSkeleton } from '@/components/LoadingSkeletons'
 import AppLayout from '@/components/AppLayout'
+import { MenuItemsContentSkeleton } from '@/components/LoadingSkeletons'
 
 interface MenuItem {
   id: string
@@ -133,12 +133,11 @@ export default function MenuItemsPage() {
   const cuisineTypes = [...new Set(menuItems.map(item => item.cuisine_type))].sort()
   const difficultyLevels = ['easy', 'medium', 'hard']
 
-  if (loading) {
-    return <MenuItemsListSkeleton />
-  }
-
   return (
     <AppLayout user={user}>
+      {loading ? (
+        <MenuItemsContentSkeleton />
+      ) : (
       <div className="space-y-6">
         {/* Page Header */}
         <div className="flex items-center justify-between">
@@ -366,6 +365,7 @@ export default function MenuItemsPage() {
           </div>
         )}
       </div>
+      )}
     </AppLayout>
   )
 }
